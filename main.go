@@ -30,7 +30,11 @@ func main() {
 		msg := receiveMsg{}
 		xml.Unmarshal(body, &msg)
 
-		sendContent := "你发送的数据为：" + msg.Content
+		if msg.MsgType != "text" {
+			c.String(http.StatusOK, "")
+		}
+		word := getOneByName(msg.Content)
+		sendContent := "你发送的数据为：" + msg.Content + word.desc
 		c.XML(http.StatusOK, responseText(msg, sendContent))
 	})
 
