@@ -26,8 +26,8 @@ type sendMsg struct {
 }
 
 // 构造返回数据格式
-func responseText(msg requestMsg, responseContent string) responseMsg {
-	return responseMsg{
+func responseText(msg receiveMsg, responseContent string) sendMsg {
+	return sendMsg{
 		ToUserName:   msg.FromUserName,
 		FromUserName: msg.ToUserName,
 		CreateTime:   time.Now().Unix(),

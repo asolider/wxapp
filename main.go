@@ -27,11 +27,11 @@ func main() {
 	route.POST("/api", func(c *gin.Context) {
 		body, _ := c.GetRawData()
 		log.Printf("用户发送信息 %s", body)
-		msg := requestMsg{}
+		msg := receiveMsg{}
 		xml.Unmarshal(body, &msg)
 
 		sendContent := "你发送的数据为：" + msg.Content
-		c.XML(http.StatusOK, ponseText(msg, sendContent))
+		c.XML(http.StatusOK, responseText(msg, sendContent))
 	})
 
 	route.Run(":8081") // listen and serve on 0.0.0.0:8080
