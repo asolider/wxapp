@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/xml"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -34,7 +35,11 @@ func main() {
 			c.String(http.StatusOK, "")
 		}
 		word := getOneByName(msg.Content)
-		sendContent := "你发送的数据为：" + msg.Content + word.desc
+		log.Printf("%v", word)
+		sendContent := "未查询到数据"
+		if word.id != 0 {
+			sendContent = fmt.Sprintf("成语：%s\n拼音：%s\n解释：%s\n出处：%s\n举例：%s", word.item, word.spell, word.desc, word.from, word.ps)
+		}
 		c.XML(http.StatusOK, responseText(msg, sendContent))
 	})
 

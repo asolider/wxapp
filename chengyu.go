@@ -11,7 +11,7 @@ var Db *sql.DB
 
 func init() {
 	var err error
-	Db, err = sql.Open("mysql", "client:password@/chengyu?charset=utf8mb4")
+	Db, err = sql.Open("mysql", "client:passowrd@tcp(127.0.0.1:port)/chengyu?charset=utf8mb4")
 
 	if err != nil {
 		log.Printf("fail to connect mysql: %s", err)
@@ -21,6 +21,7 @@ func init() {
 }
 
 type word struct {
+	id    int
 	item  string
 	spell string
 	desc  string
@@ -29,9 +30,10 @@ type word struct {
 }
 
 func getOneByName(name string) (findWord word) {
-	err := Db.QueryRow("select item,spell,desc,from,ps from word where item=?", name).Scan(&findWord.item, &findWord.spell, &findWord.desc, &findWord.from, &findWord.ps)
+	err := Db.QueryRow("select id,`item`,spell,`desc`,`from`,ps from word where `item`=?", name).Scan(&findWord.id, &findWord.item, &findWord.spell, &findWord.desc, &findWord.from, &findWord.ps)
 	if err == sql.ErrNoRows || err != nil {
-		return nil
+		log.Print(err)
+		return
 	}
 	return
 }
