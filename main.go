@@ -27,15 +27,15 @@ func main() {
 
 	route.POST("/api", func(c *gin.Context) {
 		body, _ := c.GetRawData()
-		log.Printf("用户发送信息 %s", body)
 		msg := receiveMsg{}
 		xml.Unmarshal(body, &msg)
+		log.Printf("用户发送信息 %#v", msg)
 
 		if msg.MsgType != "text" {
 			c.String(http.StatusOK, "")
 		}
 		word := getOneByName(msg.Content)
-		log.Printf("%v", word)
+		log.Printf("%#v", word)
 		sendContent := "未查询到数据"
 		if word.id != 0 {
 			sendContent = fmt.Sprintf("成语：%s\n拼音：%s\n解释：%s\n出处：%s\n举例：%s", word.item, word.spell, word.desc, word.from, word.ps)
